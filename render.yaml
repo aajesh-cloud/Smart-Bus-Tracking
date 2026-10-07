@@ -26,4 +26,4 @@ services:
         description: "Comma-separated list of allowed frontend URLs — fill this AFTER you deploy Vercel apps, e.g.: https://smart-bus-tracking-nine.vercel.app, https://smart-bus-driver.vercel.app"
     healthCheckPath: /
     numInstances: 1
-    autoDeploy: commit
+    autoDeployTrigger: commit
