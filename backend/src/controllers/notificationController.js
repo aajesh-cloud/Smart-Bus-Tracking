@@ -58,4 +58,32 @@ const getMyNotifications = async (req, res) => {
   }
 };
 
-module.exports = { setFavoriteStop, getMyNotifications };
+// @route   PUT /api/notifications/mark-all-read
+// @access  Private
+// Marks all notifications relevant to the user (filtered by favorite stop,
+// or all of them if no favorite stop is set) as read.
+const markAllAsRead = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    const filter = user.favoriteStop ? { stop: user.favoriteStop } : {};
+
+    await Notification.updateMany(
+      { ...filter, read: false },
+      { $set: { read: true } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Notifications marked as read",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error while marking notifications read",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { setFavoriteStop, getMyNotifications, markAllAsRead };

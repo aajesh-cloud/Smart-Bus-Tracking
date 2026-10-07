@@ -30,6 +30,7 @@ const MapFocusController = ({ focusedBusId, liveBuses }) => {
 };
 
 const LiveMap = ({ routeId, focusedBusId }) => {
+  const [route, setRoute] = useState(null);
   const [stops, setStops] = useState([]);
   const [liveBuses, setLiveBuses] = useState({});
   const [routeLinePositions, setRouteLinePositions] = useState([]);
@@ -39,7 +40,9 @@ const LiveMap = ({ routeId, focusedBusId }) => {
     const fetchRouteStops = async () => {
       try {
         const response = await api.get(`/routes/${routeId}`);
-        setStops(response.data.route.stops || []);
+        const fetchedRoute = response.data.route;
+        setRoute(fetchedRoute);
+        setStops(fetchedRoute.stops || []);
       } catch (error) {
         console.error("Failed to fetch route stops:", error);
       }
@@ -52,6 +55,19 @@ const LiveMap = ({ routeId, focusedBusId }) => {
 
   useEffect(() => {
     const buildRoadRoute = async () => {
+      // Strategy 1: if the route already has a cached roadPath from the
+      // backend (admin ran "Build Path"), use it directly — zero extra calls.
+      const cachedCoords = route?.roadPath?.coordinates;
+      if (cachedCoords && cachedCoords.length > 1) {
+        setRouteLinePositions(
+          cachedCoords.map(([lng, lat]) => [lat, lng])
+        );
+        return;
+      }
+
+      // Strategy 2 (fallback): fetch the route line segment-by-segment
+      // directly from OSRM in the browser. Slower, and may fail on CORS,
+      // but works when admin hasn't prebuilt the path yet.
       const validStops = stops
         .filter((s) => s.stop && s.stop.location)
         .slice()
@@ -70,7 +86,7 @@ const LiveMap = ({ routeId, focusedBusId }) => {
     };
 
     buildRoadRoute();
-  }, [stops]);
+  }, [route, stops]);
 
   useEffect(() => {
     const fetchInitialLiveLocations = async () => {

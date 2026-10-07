@@ -22,6 +22,7 @@ const AdminRoutes = () => {
   const [formData, setFormData] = useState(emptyForm);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [calculatingId, setCalculatingId] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -132,14 +133,39 @@ const AdminRoutes = () => {
     }
   };
 
+  const handleCalculateRoadPath = async (route) => {
+    setCalculatingId(route._id);
+    try {
+      const res = await api.post(`/routes/${route._id}/calculate-road-path`);
+      alert(res.data.message || `Road path calculated (${res.data.pointCount} points).`);
+      fetchData();
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+          "Failed to calculate road path. The OSRM service may be temporarily unavailable."
+      );
+    } finally {
+      setCalculatingId(null);
+    }
+  };
+
   const columns = [
     { key: "routeNumber", label: "Route #" },
     { key: "routeName", label: "Route Name" },
     { key: "stopCount", label: "Stops" },
+    { key: "roadPath", label: "Map Path" },
   ];
 
   const renderCell = (row, col) => {
     if (col.key === "stopCount") return row.stops.length;
+    if (col.key === "roadPath") {
+      const count = row.roadPath?.coordinates?.length || 0;
+      return count > 0 ? (
+        <span style={{ color: "#10b981", fontWeight: 600 }}>✓ {count} pts</span>
+      ) : (
+        <span style={{ color: "#f59e0b" }}>— Not built</span>
+      );
+    }
     return row[col.key];
   };
 
@@ -171,7 +197,33 @@ const AdminRoutes = () => {
           data={routes}
           renderCell={renderCell}
           actions={(row) => (
-            <div style={{ display: "flex", gap: "8px" }}>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <button
+                onClick={() => handleCalculateRoadPath(row)}
+                disabled={calculatingId === row._id}
+                title={
+                  row.roadPath?.coordinates?.length
+                    ? "Recalculate road path"
+                    : "Generate road-following route line"
+                }
+                style={{
+                  padding: "6px 12px",
+                  fontSize: "13px",
+                  backgroundColor:
+                    calculatingId === row._id ? "#1d4ed8" : "#2563eb",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: calculatingId === row._id ? "wait" : "pointer",
+                  opacity: calculatingId === row._id ? 0.7 : 1,
+                }}
+              >
+                {calculatingId === row._id
+                  ? "⏳ Building..."
+                  : row.roadPath?.coordinates?.length
+                  ? "🛣️ Rebuild Path"
+                  : "🛣️ Build Path"}
+              </button>
               <button
                 onClick={() => openEditModal(row)}
                 style={{

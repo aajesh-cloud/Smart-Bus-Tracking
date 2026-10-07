@@ -9,7 +9,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [shakeFields, setShakeFields] = useState({ email: false, password: false });
 
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const btnRef = useRef(null);
@@ -48,7 +48,15 @@ const Login = () => {
       if (user.role === "admin") {
         navigate("/admin");
       } else if (user.role === "driver") {
-        navigate("/driver");
+        setError(
+          "Driver accounts must use the dedicated Driver App. Please open the Driver App URL to sign in."
+        );
+        setShakeFields({ email: true, password: true });
+        setTimeout(
+          () => setShakeFields({ email: false, password: false }),
+          500
+        );
+        logout();
       } else {
         navigate("/dashboard");
       }

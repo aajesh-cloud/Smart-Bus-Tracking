@@ -1,24 +1,95 @@
-# Dependencies
+# ==============================================================================
+# Smart Bus Tracking — Root .gitignore
+# Applies to the entire monorepo (backend/ + frontend/ + mobile-driver/).
+# Do NOT add per-project rules here; per-project .gitignore files still exist.
+# ==============================================================================
+
+# ————————————————— Dependencies —————————————————
 node_modules/
 */node_modules/
+**/node_modules/
+.pnp/
+.pnp.js
+.yarn/install-state.gz
 
-# Environment variables (NEVER commit these — contain secrets)
+# ————————————————— Environment & Secrets (NEVER commit these) —————————————————
 .env
-*/.env
 .env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+*/.env
+*/.env.local
+*.pem
+*.key
+secrets.json
 
-# Build outputs
+# ————————————————— Build outputs —————————————————
 dist/
 */dist/
+**/dist/
 build/
+**/build/
+dist-ssr/
+build-ssr/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.output/
 
-# OS-generated files
-.DS_Store
-Thumbs.db
+# Vite & bundler caches
+**/node_modules/.vite/
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
 
-# Editor files
-.vscode/
+# ————————————————— Logs & diagnostics —————————————————
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+report.*.json
+*.tsbuildinfo
 
-# Vite cache
-*/node_modules/.vite/
+# ————————————————— OS generated —————————————————
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ————————————————— Editors / IDEs —————————————————
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sw?
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ————————————————— Misc / local —————————————————
+coverage/
+*.lcov
+*.local
+.tmp/
+temp/
+tmp/

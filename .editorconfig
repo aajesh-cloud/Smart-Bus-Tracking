@@ -1,0 +1,47 @@
+# ==============================================================================
+# Smart Bus Tracking — .editorconfig
+# Aligns indentation / newlines across IDEs (VS Code, WebStorm, etc.).
+# Install the "EditorConfig for VS Code" extension to get automatic behavior.
+# ==============================================================================
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = off
+
+# Backend Node.js (server-side JS)
+[backend/**/*.js]
+indent_style = space
+indent_size = 2
+
+# Frontend JSX/JS
+[frontend/src/**/*.{js,jsx}]
+indent_style = space
+indent_size = 2
+
+[mobile-driver/src/**/*.{js,jsx}]
+indent_style = space
+indent_size = 2
+
+[*.{json,html,css}]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab
+
+[{*.bat,*.cmd,*.ps1}]
+end_of_line = crlf

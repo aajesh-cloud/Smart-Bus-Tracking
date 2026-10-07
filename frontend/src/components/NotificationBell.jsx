@@ -71,10 +71,27 @@ const NotificationBell = () => {
   }, []);
 
   const handleToggle = () => {
-    setIsOpen((prev) => !prev);
-    if (!isOpen) {
-      setUnreadCount(0);
-    }
+    setIsOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (!nextIsOpen) {
+        setUnreadCount(0);
+      } else {
+        // Opening the panel — persist the "mark all as read" operation
+        // in the backend AND reset local unread state.
+        api
+          .put("/notifications/mark-all-read")
+          .then(() => {
+            setNotifications((list) =>
+              list.map((n) => ({ ...n, read: true }))
+            );
+          })
+          .catch((err) =>
+            console.warn("Could not mark notifications read:", err)
+          );
+        setUnreadCount(0);
+      }
+      return nextIsOpen;
+    });
   };
 
   const formatTime = (dateString) => {

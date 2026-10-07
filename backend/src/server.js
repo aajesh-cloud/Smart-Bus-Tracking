@@ -23,7 +23,7 @@ connectDB();
 const defaultOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
-  "https://smart-bus-frontend-lyart.vercel.app",
+  "https://smart-bus-tracking-nine.vercel.app",
   "https://smart-bus-driver.vercel.app",
 ];
 

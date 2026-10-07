@@ -1,0 +1,31 @@
+# ---------------------------------------------------------------------
+# Smart Bus Tracking — Passenger Frontend  (.vercelignore)
+# Files/folders in here are NOT uploaded to Vercel's build runner.
+# Keeps the upload small and prevents .env leakage.
+# ---------------------------------------------------------------------
+
+# —— Secrets & local env ——
+.env
+.env.*
+!.env.example
+
+# —— Dependencies (Vercel re-runs npm install itself) ——
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# —— Build artifacts (Vercel re-runs npm run build itself) ——
+dist
+build
+.cache
+.turbo
+.eslintcache
+.vite
+
+# —— Editor / IDE ——
+.vscode
+.idea
+.DS_Store
+Thumbs.db

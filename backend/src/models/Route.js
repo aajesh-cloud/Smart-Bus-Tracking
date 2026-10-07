@@ -35,6 +35,17 @@ const routeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    roadPath: {
+      type: {
+        type: String,
+        enum: ["LineString"],
+        default: "LineString",
+      },
+      coordinates: {
+        type: [[Number]],
+        default: [],
+      },
+    },
   },
   {
     timestamps: true,

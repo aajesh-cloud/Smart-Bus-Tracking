@@ -29,8 +29,8 @@ const registerUser = async (req, res) => {
       email,
       password,
       phone,
-      role: role || "passenger",
-      licenseNumber: role === "driver" ? licenseNumber : null,
+      role: "passenger",
+      licenseNumber: null,
     });
 
     const token = generateToken(newUser._id, newUser.role);

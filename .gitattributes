@@ -1,0 +1,43 @@
+# ==============================================================================
+# Smart Bus Tracking — Line endings & linguist attributes
+# Keep Windows CRLF vs Unix LF diff noise out of PRs.
+# ==============================================================================
+
+# —— Default: force LF, diffs as text ——
+* text=auto eol=lf
+
+# —— Explicit CRLF for files that genuinely need it on Windows ——
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# —— Markdown / docs — preserve LF ——
+*.md   text eol=lf
+*.txt  text eol=lf
+
+# —— Code — standardize ——
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+*.css  text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.svg  text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.sh   text eol=lf
+Makefile text eol=lf
+
+# —— Binary — don't touch ——
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.eot  binary
+*.mp4  binary
+*.pdf  binary
+*.zip  binary
