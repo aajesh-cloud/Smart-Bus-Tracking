@@ -27,4 +27,4 @@ services:
     healthCheckPath: /
     numInstances: 1
     autoDeploy: yes
-    pullPreviews: no
+    pullPreviews: false
